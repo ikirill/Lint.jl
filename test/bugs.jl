@@ -87,4 +87,12 @@ function f{N}(::Array{Int,N})
 end
 """))
 
+# bug 187
+@test isempty(lintstr("""
+module Test
+import Base.Iterators: flatten
+export flatten
+end
+"""))
+
 end
