@@ -95,7 +95,10 @@ function infertype(f, argtypes::Tuple)
         Core.Inference.return_type(convert, Tuple{Type{f}, argtypes[1]})
     else
         try
-            typejoin(Base.return_types(f, Tuple{argtypes...})...)
+            # @show Base.return_types(f, Tuple{argtypes...})
+            # @time typejoin(Base.return_types(f, Tuple{argtypes...})...)
+            t = Base.return_types(f, Tuple{argtypes...})
+            Any ∈ t ? Any : typejoin(t...)
         catch  # error might be thrown if generic function, try using inference
             if all(isleaftype, argtypes)
                 Core.Inference.return_type(f, Tuple{argtypes...})
